@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* Tema <html class="dark"> ile değişir (index.html'deki betik ve tema düğmesi ayarlar). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.animate-rise {
+  animation: rise 0.35s ease-out both;
+}
+.shimmer {
+  background-image: linear-gradient(90deg, transparent 25%, rgb(120 120 140 / 0.18) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise,
+  .shimmer {
+    animation: none;
+  }
+}

@@ -32,6 +32,17 @@ Gmail (yönetici hesabı) ──► Mail ──► LLM (plan + mail birlikte) �
 
 ## Durum
 
-Backend (`backend/`) Aşama 0-3 tamam: Excel proje hafızası, LLM analizi (Gemini), router, kart ve onay API'si (mock mail sağlayıcıyla). Sıradaki: Aşama 4, React dashboard (`docs/GELISTIRME_REHBERI.md` §5).
+Aşama 0-4 tamam: Excel proje hafızası, LLM analizi (Gemini), router, kart ve onay API'si (`backend/`, mock mail sağlayıcıyla) ve React dashboard (`frontend/`). Sıradaki: Aşama 5, Gmail/Calendar entegrasyonu (`docs/GELISTIRME_REHBERI.md` §5).
 
-Backend'i çalıştırmak için: `cd backend && cp .env.example .env` (anahtarı doldur) `&& uv run uvicorn app.main:app --reload`, testler için `uv run pytest`.
+Çalıştırmak için iki ayrı terminal:
+
+```bash
+cd backend && cp .env.example .env   # .env'e LLM anahtarını ve model adını yaz
+uv run uvicorn app.main:app --reload # http://localhost:8000 (API dokümanı: /docs)
+```
+
+```bash
+cd frontend && npm install && npm run dev   # http://localhost:5173
+```
+
+Panelde önce Excel'i yükle (`backend/data/ornek_proje.xlsx`), sonra "Demo mailleri yükle". Testler: `cd backend && uv run pytest`.
