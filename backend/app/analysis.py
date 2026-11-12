@@ -3,6 +3,7 @@ import json
 
 from pydantic import ValidationError
 
+from app.config import settings
 from app.llm.base import LLMClient, LLMError
 from app.memory import ProjectMemory
 from app.schemas import Analysis, Email, ProcessedEmail
@@ -24,6 +25,8 @@ Alanlar:
 - delay_days: E-postada belirtilen gecikme, gün olarak (1 hafta = 7 gün). Belirtilmemişse null; tahmin uydurma.
 - action_type: SEND_EMAIL (durum sorgulama/bilgilendirme taslağı), SCHEDULE_MEETING veya NONE.
 - draft_to: Taslağın alıcıları. Yalnızca planda geçen veya e-postanın gönderen/alıcı alanlarındaki adresler.
+  Taslağı YÖNETİCİ gönderir: yöneticiyi alıcı yapma. Alıcıları en aza indir; yalnızca sorunu çözebilecek
+  veya bilmesi gereken kişileri seç (genellikle 1-2 kişi), herkesi ekleme.
 - draft_subject, draft_body: Kısa, profesyonel Türkçe taslak. Aksiyon yoksa boş string.
 Plandaki durumlar: DONE tamamlanmış görevdir, gecikmez."""
 
@@ -47,7 +50,8 @@ def build_user_prompt(email: Email, memory: ProjectMemory) -> str:
     # Mail gövdesi etiketi kapatıp "dışarı çıkamasın" diye kapanış etiketi etkisizleştirilir.
     body = email.body.replace("</email>", "[/email]")
     return (
-        f"BUGÜN: {email.date.isoformat()}\n\n"
+        f"BUGÜN: {email.date.isoformat()}\n"
+        f"YÖNETİCİ (taslağı gönderen): {settings.manager_email or 'belirtilmedi'}\n\n"
         f"PROJE PLANI (JSON):\n{json.dumps(memory.to_context(), ensure_ascii=False)}\n\n"
         f"GÖNDERENİN PLANDAKİ GÖREVLERİ: {json.dumps(sender_tasks, ensure_ascii=False)}\n\n"
         "E-POSTA:\n<email>\n"

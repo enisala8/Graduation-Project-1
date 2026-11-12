@@ -56,3 +56,41 @@ class ProcessedEmail(BaseModel):
     analysis: Analysis | None = None
     impact: ImpactReport | None = None
     warnings: list[str] = []
+
+
+class CardStatus(str, Enum):
+    PROCESSING = "PROCESSING"  # LLM analizi sürüyor
+    PENDING = "PENDING"  # yönetici onayı bekliyor
+    NO_ACTION = "NO_ACTION"  # analiz edildi, aksiyon gerekmiyor
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
+    FAILED = "FAILED"  # analiz başarısız
+
+
+class Draft(BaseModel):
+    """Router'ın doğrulayıp temizlediği, yöneticiye gösterilecek aksiyon taslağı."""
+
+    action_type: ActionType
+    to: list[str]
+    subject: str
+    body: str
+    warnings: list[str] = []
+
+
+class DraftEdit(BaseModel):
+    """Yönetici onaylarken taslağı değiştirebilir; verilmeyen alan olduğu gibi kalır."""
+
+    to: list[str] | None = None
+    subject: str | None = None
+    body: str | None = None
+
+
+class Card(BaseModel):
+    id: int
+    status: CardStatus
+    email: Email
+    result: ProcessedEmail | None = None
+    draft: Draft | None = None
+    error: str | None = None
+    created_at: str
+    decided_at: str | None = None

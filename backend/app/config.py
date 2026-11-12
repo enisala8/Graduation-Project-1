@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     llm_api_key: str = ""
 
     mail_provider: str = "mock"  # mock | gmail
+    manager_email: str = ""  # taslakları gönderen yönetici; alıcı listesinden çıkarılır
 
     database_url: str = "chronos.db"
     frontend_origin: str = "http://localhost:5173"

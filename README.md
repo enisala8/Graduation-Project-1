@@ -32,4 +32,6 @@ Gmail (yönetici hesabı) ──► Mail ──► LLM (plan + mail birlikte) �
 
 ## Durum
 
-Henüz kod yok; tasarım aşaması. Sıradaki adım: `docs/GELISTIRME_REHBERI.md` §5, Aşama 0.
+Backend (`backend/`) Aşama 0-3 tamam: Excel proje hafızası, LLM analizi (Gemini), router, kart ve onay API'si (mock mail sağlayıcıyla). Sıradaki: Aşama 4, React dashboard (`docs/GELISTIRME_REHBERI.md` §5).
+
+Backend'i çalıştırmak için: `cd backend && cp .env.example .env` (anahtarı doldur) `&& uv run uvicorn app.main:app --reload`, testler için `uv run pytest`.
